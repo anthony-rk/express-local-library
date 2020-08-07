@@ -90,8 +90,7 @@ exports.bookinstance_create_post = [
             bookinstance.save(function (err) {
                 if (err) { return next(err); }
                 // Successful - redirect to new record.
-                // res.redirect(bookinstance.url); // NOT REDIRECTING TO THE URL...
-                res.redirect('/catalog/bookinstances');
+                res.redirect(bookinstance.url);
                 });
         }
     }
@@ -107,7 +106,7 @@ exports.bookinstance_delete_get = function(req, res, next) {
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.book_instance==null) { // No results.
-            res.redirect('/catalog/bookinstances');
+            res.redirect(bookinstance.url);
         }
         // Successful, so render.
         res.render('bookinstance_delete', { title: 'Delete Book instance', book_instance: results.book_instance} );
@@ -128,7 +127,7 @@ exports.bookinstance_delete_post = function(req, res, next) {
         BookInstance.findByIdAndRemove(req.body.bookinstanceid, function deleteBookInstance(err) {
             if (err) { return next(err); }
             // Success - go to author list
-            res.redirect('/catalog/bookinstances')
+            res.redirect(bookinstance.url);
         })
     });
 };
