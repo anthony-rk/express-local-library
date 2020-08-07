@@ -101,12 +101,12 @@ exports.bookinstance_delete_get = function(req, res, next) {
 
     async.parallel({
         book_instance: function(callback) {
-            BookInstance.findById(req.params.id).exec(callback)
+            BookInstance.findById(req.params.id).populate('book').exec(callback)
         },
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.book_instance==null) { // No results.
-            res.redirect(bookinstance.url);
+            res.redirect('/catalog/bookinstances');
         }
         // Successful, so render.
         res.render('bookinstance_delete', { title: 'Delete Book instance', book_instance: results.book_instance} );
@@ -117,19 +117,12 @@ exports.bookinstance_delete_get = function(req, res, next) {
 // Handle BookInstance delete on POST.
 exports.bookinstance_delete_post = function(req, res, next) {
 
-    async.parallel({
-        genbook_instancere: function(callback) {
-          BookInstance.findById(req.body.bookinstanceid).exec(callback)
-        },
-    }, function(err, results) {
+    // Assume valid BookInstance id in field.
+    BookInstance.findByIdAndRemove(req.body.id, function deleteBookInstance(err) {
         if (err) { return next(err); }
-        // Success
-        BookInstance.findByIdAndRemove(req.body.bookinstanceid, function deleteBookInstance(err) {
-            if (err) { return next(err); }
-            // Success - go to author list
-            res.redirect(bookinstance.url);
-        })
-    });
+        // Success, so redirect to list of BookInstance items.
+        res.redirect('/catalog/bookinstances');
+        });
 };
 
 // Display BookInstance update form on GET.
