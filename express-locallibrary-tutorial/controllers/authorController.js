@@ -208,12 +208,12 @@ exports.author_update_post = [
             }, function(err, results) {
                 if (err) { return next(err); }
 
-                // Mark our selected genres as checked.
-                for (let i = 0; i < results.genres.length; i++) {
-                    if (book.genre.indexOf(results.genres[i]._id) > -1) {
-                        results.genres[i].checked='true';
-                    }
-                }
+                // // Mark our selected genres as checked.
+                // for (let i = 0; i < results.genres.length; i++) {
+                //     if (book.genre.indexOf(results.genres[i]._id) > -1) {
+                //         results.genres[i].checked='true';
+                //     }
+                // }
                 res.render('author_form', { title: 'Update Author', author: results.author });
             });
             return;
