@@ -173,8 +173,8 @@ exports.author_update_post = [
     // Validate fields.
     body('first_name', 'First name must not be empty.').trim().isLength({ min: 1 }),
     body('family_name', 'Family name must not be empty.').trim().isLength({ min: 1 }),
-    body('date_of_birth', 'Date of Birth must not be empty.').trim().isLength({ min: 1 }),
-    body('date_of_death', 'Date of Death must not be empty.').trim().isLength({ min: 1 }),
+    body('date_of_birth', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
+    body('date_of_death', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
 
     // Sanitize fields.
     sanitizeBody('first_name').escape(),
